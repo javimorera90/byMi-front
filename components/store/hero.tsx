@@ -6,7 +6,7 @@ export function Hero() {
           Stickers para tu vida
         </p>
         <h1 className="font-serif text-5xl sm:text-6xl lg:text-8xl leading-[1.1] mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100 text-balance">
-          Decora tu mundo . HOLAAA
+          Decora tu mundo
         </h1>
         <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200 text-pretty">
           Tu laptop, tu termo, tu cuaderno... todo queda mejor con stickers. 
