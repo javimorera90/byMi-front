@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Search, ShoppingBag, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { ThemeToggle } from "@/components/store/theme-toggle"
 
 const MOBILE_MENU_BUTTON_ID = "mobile-menu-button"
 
@@ -102,6 +103,8 @@ export function Header({ cartItemCount, onCartClick }: HeaderProps) {
                 </Button>
               )}
             </div>
+
+            <ThemeToggle />
 
             <Button
               type="button"
