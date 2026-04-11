@@ -6,7 +6,8 @@ import * as React from 'react'
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+/** Ms to wait after dismiss before unmounting — for exit animation only, not visible duration (see Radix `duration` on `<Toast />`). */
+const TOAST_REMOVE_DELAY = 1000
 
 type ToasterToast = ToastProps & {
   id: string

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Header } from "@/components/store/header"
 import { Hero } from "@/components/store/hero"
 import { CollectionGrid } from "@/components/store/collection-grid"
@@ -9,11 +9,28 @@ import { ProductGrid } from "@/components/store/product-grid"
 import { SideCart, type CartItem } from "@/components/store/side-cart"
 import { Footer } from "@/components/store/footer"
 import type { Product } from "@/components/store/product-card"
+import { loadCartFromStorage, saveCartToStorage } from "@/lib/cart-storage"
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [cartItems, setCartItems] = useState<CartItem[]>([])
+  const [cartHydrated, setCartHydrated] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      setCartItems(loadCartFromStorage())
+      setCartHydrated(true)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!cartHydrated) return
+    saveCartToStorage(cartItems)
+  }, [cartItems, cartHydrated])
+
+  const openCart = useCallback(() => setIsCartOpen(true), [])
+  const closeCart = useCallback(() => setIsCartOpen(false), [])
 
   const handleAddToCart = useCallback((product: Product) => {
     setCartItems((prev) => {
@@ -50,11 +67,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <Header 
-        cartItemCount={cartItemCount} 
-        onCartClick={() => setIsCartOpen(true)} 
-      />
-      
+      <Header cartItemCount={cartItemCount} onCartClick={openCart} />
+
       <main>
         <Hero />
         <CollectionGrid />
@@ -72,7 +86,7 @@ export default function Home() {
 
       <SideCart
         isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
+        onClose={closeCart}
         items={cartItems}
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
