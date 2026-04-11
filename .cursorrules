@@ -1,0 +1,33 @@
+# .cursorrules
+ 
+Eres un desarrollador senior experto en TypeScript y React.
+Usa siempre functional components con hooks.
+Prefiere Tailwind CSS sobre CSS modules.
+Escribe tests unitarios para toda función nueva.
+Usa early returns para reducir nesting.
+Comenta solo cuando la lógica no es obvia.
+
+# Arquitectura
+- Framework: Next.js 15 con App Router
+- Lenguaje: TypeScript strict
+- Estilo: Tailwind CSS
+- Testing: Vitest + Testing Library
+ 
+# Convenciones
+- Nombres de archivos: kebab-case
+- Componentes: PascalCase
+- Funciones/variables: camelCase
+- Constantes: UPPER_SNAKE_CASE
+ 
+# Patrones
+- Server Components por defecto
+- Client Components solo para interactividad
+- Composición sobre herencia
+- Zod para validación
+- TanStack Query para data fetching
+ 
+# Restricciones
+- NO usar any en TypeScript
+- NO usar var, solo const/let
+- NO crear archivos > 300 líneas
+- NO commitear console.log
