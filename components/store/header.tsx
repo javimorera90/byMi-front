@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Search, ShoppingBag, Menu, X } from "lucide-react"
@@ -18,6 +18,34 @@ interface HeaderProps {
 export function Header({ cartItemCount, onCartClick }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const searchContainerRef = useRef<HTMLDivElement>(null)
+
+  const closeSearch = useCallback(() => setIsSearchOpen(false), [])
+
+  useEffect(() => {
+    if (!isSearchOpen) return
+
+    const onPointerDown = (e: PointerEvent) => {
+      const el = searchContainerRef.current
+      if (el && !el.contains(e.target as Node)) {
+        closeSearch()
+      }
+    }
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault()
+        closeSearch()
+      }
+    }
+
+    document.addEventListener("pointerdown", onPointerDown)
+    document.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown)
+      document.removeEventListener("keydown", onKeyDown)
+    }
+  }, [isSearchOpen, closeSearch])
 
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false)
@@ -69,7 +97,7 @@ export function Header({ cartItemCount, onCartClick }: HeaderProps) {
           </nav>
 
           <div className="flex items-center gap-2">
-            <div className="relative">
+            <div ref={searchContainerRef} className="relative">
               {isSearchOpen ? (
                 <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-200">
                   <Input
@@ -84,10 +112,10 @@ export function Header({ cartItemCount, onCartClick }: HeaderProps) {
                     variant="ghost"
                     size="icon"
                     className="h-9 w-9"
-                    onClick={() => setIsSearchOpen(false)}
+                    onClick={closeSearch}
                     aria-label="Cerrar búsqueda"
                   >
-                    <X className="h-4 w-4" />
+                    <Search className="h-4 w-4" />
                   </Button>
                 </div>
               ) : (
